@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<button type="button" onclick="getData()">取得 Json 資料</button>
+
+<br />
+<script>
+    function getData() {
+        $.get('@Url.Action("DataToJson", "AR")', function (data) {
+            console.log(data);
+        });
+    }
+</script>

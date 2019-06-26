@@ -1,0 +1,80 @@
+﻿@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@model IEnumerable<MVC5Course.Models.Course>
+
+@{
+    ViewBag.Title = "Index";
+    if (IsAjax)
+    {
+        Layout = "";
+    }
+}
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+    @Ajax.ActionLink("取得時間", "GetTime", new AjaxOptions() { UpdateTargetId = "TimeSlot", Confirm = "是否要取得時間?" })
+    <span id="TimeSlot"></span>
+    @{
+        ViewBag.Message = @"123<>
+456
+789";
+    }
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Credits)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Department.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Credits)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.CourseID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.CourseID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.CourseID })
+            </td>
+        </tr>
+    }
+
+</table>
+@{
+    var data = Model as IPagedList;
+}
+@Html.PagedListPager(data,
+    (p) => Url.Action("Index", new { pageNo = p ,pageSize = data.PageSize})
+    ,PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("main"))
+
+     console.log('@Ajax.JavaScriptStringEncode(ViewBag.Message)');
